@@ -2,7 +2,7 @@
 
 Run the following commands in the Terminal below:
 
-1. `cd ~/workspace/firefeed`
+1. `cd ~/workspace/publicpredictions`
 2. `bundle install`
 3. `./script/server`
 

@@ -1,31 +1,31 @@
 
 describe("Initialization:", function() {
-  var firefeed = null;
+  var publicpredictions = null;
 
   beforeEach(function() {
-    firefeed = helpers.createFeed();
+    publicpredictions = helpers.createFeed();
   });
 
   afterEach(function() {
-    firefeed.unload();
-    firefeed = null;
+    publicpredictions.unload();
+    publicpredictions = null;
   });
 
   it("Constructor", function() {
-    expect(typeof firefeed).toBe(typeof {});
-    expect(firefeed._baseURL).toBe(BASEURL);
+    expect(typeof publicpredictions).toBe(typeof {});
+    expect(publicpredictions._baseURL).toBe(BASEURL);
   });
 
   it("Login", function() {
-    spyOn(firefeed._firebase, 'authWithOAuthPopup');
-    firefeed.login('facebook');
-    expect(firefeed._firebase.authWithOAuthPopup).toHaveBeenCalled();
+    spyOn(publicpredictions._firebase, 'authWithOAuthPopup');
+    publicpredictions.login('facebook');
+    expect(publicpredictions._firebase.authWithOAuthPopup).toHaveBeenCalled();
   });
 
   it("Logout", function() {
-    spyOn(firefeed._firebase, 'unauth');
-    firefeed.logout();
-    expect(firefeed._firebase.unauth).toHaveBeenCalled();
+    spyOn(publicpredictions._firebase, 'unauth');
+    publicpredictions.logout();
+    expect(publicpredictions._firebase.unauth).toHaveBeenCalled();
   });
 
 });

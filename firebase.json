@@ -1,5 +1,5 @@
 {
-  "firebase": "firefeed",
+  "firebase": "publicpredictions",
   "public": "www",
   "rules": "rules.json"
 }

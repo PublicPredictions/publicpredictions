@@ -2,8 +2,8 @@
 describe("Operations:", function() {
   var spark1Id = null;
   var spark2Id = null;
-  var firefeed1 = null;
-  var firefeed2 = null;
+  var publicpredictions1 = null;
+  var publicpredictions2 = null;
   var content1 = "test spark I"
   var content2 = "test spark II";
 
@@ -12,9 +12,9 @@ describe("Operations:", function() {
 
     runs(function() {
       makeAndLoginAs(USER, function(ff1) {
-        firefeed1 = ff1;
+        publicpredictions1 = ff1;
         makeAndLoginAs(USER2, function(ff2) {
-          firefeed2 = ff2;
+          publicpredictions2 = ff2;
           flag1 = true;
         });
       });
@@ -22,14 +22,14 @@ describe("Operations:", function() {
 
     waitsFor(function() {
       return flag1;
-    }, "Initializing Firefeed with two logins", TIMEOUT * 2);
+    }, "Initializing PublicPredictions with two logins", TIMEOUT * 2);
   });
 
   it("Post without follower", function() {
     var flag2 = false;
 
     runs(function() {
-      firefeed2.post(content1, function(err, done) {
+      publicpredictions2.post(content1, function(err, done) {
         expect(err).toBe(false);
         expect(typeof done).toBe("string");
         spark1Id = done;
@@ -46,10 +46,10 @@ describe("Operations:", function() {
     var flag3 = false;
 
     runs(function() {
-      firefeed1.follow(USER2, function(err, done) {
+      publicpredictions1.follow(USER2, function(err, done) {
         expect(err).toBe(false);
         expect(done).toBe(USER2);
-        expect(firefeed1._mainUser).toNotBe(null);
+        expect(publicpredictions1._mainUser).toNotBe(null);
         flag3 = true;
       });
     });
@@ -64,7 +64,7 @@ describe("Operations:", function() {
     var flag4 = false;
 
     runs(function() {
-      var stream = firefeed1._mainUser.child("stream");
+      var stream = publicpredictions1._mainUser.child("stream");
       stream.once("value", function(snap) {
         snap.forEach(function(sparkSnap) {
           if (sparkSnap.name() == spark1Id) {
@@ -84,7 +84,7 @@ describe("Operations:", function() {
     var flag5 = false;
 
     runs(function() {
-      var ref = firefeed1._mainUser.child("following").child(USER2);
+      var ref = publicpredictions1._mainUser.child("following").child(USER2);
       ref.once("value", function(snapshot) {
         expect(snapshot.val() === true);
         flag5 = true;
@@ -101,7 +101,7 @@ describe("Operations:", function() {
     var flag6 = false;
 
     runs(function() {
-      var ref = firefeed2._firebase.child("users").child(USER2);
+      var ref = publicpredictions2._firebase.child("users").child(USER2);
       ref.child("followers").once("value", function(snapshot) {
         expect(snapshot.val() === true);
         flag6 = true;
@@ -118,14 +118,14 @@ describe("Operations:", function() {
 
     // Check that the spark appears in the global list.
     runs(function() {
-      firefeed2._firebase.child("sparks").once("child_added", function(snap) {
+      publicpredictions2._firebase.child("sparks").once("child_added", function(snap) {
         var spark = snap.val();
         expect(spark.author).toBe(USER2);
         expect(spark.content).toBe(content2);
         spark2Id = snap.name();
         flag7 = true;
       });
-      firefeed2.post(content2, function(err, done) {
+      publicpredictions2.post(content2, function(err, done) {
         expect(err).toBe(false);
         expect(typeof done).toBe("string");
       });
@@ -141,7 +141,7 @@ describe("Operations:", function() {
     var flag8 = false;
 
     runs(function() {
-      var ref = firefeed2._firebase.child("sparks").child(spark2Id);
+      var ref = publicpredictions2._firebase.child("sparks").child(spark2Id);
       ref.once("value", function(snap) {
         var spark = snap.val();
         expect(snap.name()).toBe(spark2Id);
@@ -161,7 +161,7 @@ describe("Operations:", function() {
     var flag9 = false;
 
     runs(function() {
-      var ref = firefeed1._mainUser.child("stream").child(spark2Id);
+      var ref = publicpredictions1._mainUser.child("stream").child(spark2Id);
       ref.once("value", function(snap) {
         expect(snap.name()).toBe(spark2Id);
         expect(snap.val()).toBe(true);

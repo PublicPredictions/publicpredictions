@@ -3,14 +3,14 @@ var USER = "jasmine";
 var USER2 = "jasmine2";
 
 var TIMEOUT = 1000;
-var BASEURL = "https://firefeed-staging.firebaseio.com";
+var BASEURL = "https://publicpredictions-staging.firebaseio.com";
 
 // Replace $TOP_SECRET with the secret for BASEURL.
 var tokenGenerator = new FirebaseTokenGenerator('uTZgdJmwpcPqHtxqZ0gpNvqaODY2ELUYyGBfh3rb');
 
 // We create a new context so we can auth independently.
 var makeAndLoginAs = function(user, cb) {
-  var ff = new Firefeed(BASEURL, true);
+  var ff = new PublicPredictions(BASEURL, true);
 
   // Use the token generator to make a token. Never do this in a real web app!
   var token = tokenGenerator.createToken({id: user});
@@ -37,7 +37,7 @@ var helpers = {
 
   tokenGenerator: new FirebaseTokenGenerator('uTZgdJmwpcPqHtxqZ0gpNvqaODY2ELUYyGBfh3rb'),
 
-  BASEURL: 'https://firefeed-staging.firebaseio.com',
+  BASEURL: 'https://publicpredictions-staging.firebaseio.com',
 
   userOne: {
     id: 1,
@@ -56,7 +56,7 @@ var helpers = {
   },
 
   createFeed: function(params) {
-    return new Firefeed(this.BASEURL);
+    return new PublicPredictions(this.BASEURL);
   },
   setUserToLocalStorage: function(user, token) {
     localStorage.clear();

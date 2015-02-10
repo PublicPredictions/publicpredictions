@@ -1,16 +1,16 @@
 
 describe("Events:", function() {
-  var firefeed1 = null;
-  var firefeed2 = null;
+  var publicpredictions1 = null;
+  var publicpredictions2 = null;
 
   beforeEach(function() {
     var flag = false;
 
     runs(function() {
       makeAndLoginAs(USER, function(ff1) {
-        firefeed1 = ff1;
+        publicpredictions1 = ff1;
         makeAndLoginAs(USER2, function(ff2) {
-          firefeed2 = ff2;
+          publicpredictions2 = ff2;
           flag = true;
         });
       });
@@ -18,7 +18,7 @@ describe("Events:", function() {
 
     waitsFor(function() {
       return flag;
-    }, "Initializing Firefeed with two logins", TIMEOUT * 2);
+    }, "Initializing PublicPredictions with two logins", TIMEOUT * 2);
   });
 
   it("Suggested User", function() {
@@ -26,7 +26,7 @@ describe("Events:", function() {
     var flag = false;
 
     runs(function() {
-      firefeed2.onNewSuggestedUser(function(user) {
+      publicpredictions2.onNewSuggestedUser(function(user) {
         expect(user).toBe(USER);
         flag = true;
       });
@@ -44,11 +44,11 @@ describe("Events:", function() {
     var content = "this is another sample spark";
 
     runs(function() {
-      firefeed2.post(content, function(err, done) {
+      publicpredictions2.post(content, function(err, done) {
         expect(err).toBe(false);
         expect(typeof done).toBe("string");
         sparkId = done;
-        firefeed1.onNewSpark(function(id, spark) {
+        publicpredictions1.onNewSpark(function(id, spark) {
           if (id != sparkId) {
             return;
           }
