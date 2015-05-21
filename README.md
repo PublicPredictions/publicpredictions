@@ -39,20 +39,14 @@ An iOS client is also available. Download the app from the
 [App Store](https://itunes.apple.com/us/app/ipublicpredictions/id645597646?mt=8&uo=4)
 and browse the [source](https://github.com/firebase/iPublicPredictions).
 
-Exercises for the reader
-------------------------
-1. Implement unfollowing a user.
-2. Implement protected accounts. If a user opts into a protected account, their
-sparks can only be viewed by people they approve.
-3. Implement search based on #hashtags. (Hint: Instead of searching for the
-actual value through the global list of sparks, consider creating a new bucket
-for every hashtag when it is first used, and then populating it with spark
-references).
-4. Implement retweets, favorites and @ messages to other users. (Hint: You can sort
-the @ messages at creation time for ease of rendering on the consumer side).
-5. Implement direct messages. (Hint: Use a mailbox style system between users, and
-setup your rules such that you can write to another user's mailbox but not read
-from it).
+TODO:
+-----
+0. Set a date on a prediction (default to December 31st of current year).
+1. Unfollow a user.
+2. Make a user's predictions private.
+3. Search for #hashtags.
+4. Agree/Disagree with a prediction.
+5. Mark prediction Accurate/Inaccurate.
 
 Help
 ----
