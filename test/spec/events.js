@@ -37,24 +37,24 @@ describe("Events:", function() {
     }, "Waiting for suggested user callback", TIMEOUT);
   });
 
-  it("New spark", function() {
-    // Post a spark on USER2 and see if it appears for USER.
+  it("New prediction", function() {
+    // Post a prediction on USER2 and see if it appears for USER.
     var flag = false;
-    var sparkId = null;
-    var content = "this is another sample spark";
+    var predictionId = null;
+    var content = "this is another sample prediction";
 
     runs(function() {
       publicpredictions2.post(content, function(err, done) {
         expect(err).toBe(false);
         expect(typeof done).toBe("string");
-        sparkId = done;
-        publicpredictions1.onNewSpark(function(id, spark) {
-          if (id != sparkId) {
+        predictionId = done;
+        publicpredictions1.onNewPrediction(function(id, prediction) {
+          if (id != predictionId) {
             return;
           }
-          expect(spark.author).toBe(USER2);
-          expect(spark.by).toBe(USER2);
-          expect(spark.content).toBe(content);
+          expect(prediction.author).toBe(USER2);
+          expect(prediction.by).toBe(USER2);
+          expect(prediction.content).toBe(content);
           flag = true;
         });
       });
@@ -62,6 +62,6 @@ describe("Events:", function() {
 
     waitsFor(function() {
       return flag;
-    }, "Waiting for new spark to appear", TIMEOUT);
+    }, "Waiting for new prediction to appear", TIMEOUT);
   });
 });

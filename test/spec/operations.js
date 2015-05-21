@@ -1,11 +1,11 @@
 
 describe("Operations:", function() {
-  var spark1Id = null;
-  var spark2Id = null;
+  var prediction1Id = null;
+  var prediction2Id = null;
   var publicpredictions1 = null;
   var publicpredictions2 = null;
-  var content1 = "test spark I"
-  var content2 = "test spark II";
+  var content1 = "test prediction I"
+  var content2 = "test prediction II";
 
   beforeEach(function() {
     var flag1 = false;
@@ -32,7 +32,7 @@ describe("Operations:", function() {
       publicpredictions2.post(content1, function(err, done) {
         expect(err).toBe(false);
         expect(typeof done).toBe("string");
-        spark1Id = done;
+        prediction1Id = done;
         flag2 = true;
       });
     });
@@ -59,15 +59,15 @@ describe("Operations:", function() {
     }, "Waiting for follow callback", TIMEOUT);
   });
 
-  it("Previous spark copied", function() {
-    // Check that the previous spark of the user just followed was copied.
+  it("Previous prediction copied", function() {
+    // Check that the previous prediction of the user just followed was copied.
     var flag4 = false;
 
     runs(function() {
       var stream = publicpredictions1._mainUser.child("stream");
       stream.once("value", function(snap) {
-        snap.forEach(function(sparkSnap) {
-          if (sparkSnap.name() == spark1Id) {
+        snap.forEach(function(predictionSnap) {
+          if (predictionSnap.name() == prediction1Id) {
             flag4 = true;
           }
         });
@@ -76,7 +76,7 @@ describe("Operations:", function() {
 
     waitsFor(function() {
       return flag4;
-    }, "Waiting for spark copy callback", TIMEOUT);
+    }, "Waiting for prediction copy callback", TIMEOUT);
   });
 
   it("User in following list", function() {
@@ -116,13 +116,13 @@ describe("Operations:", function() {
   it("Post in global list", function() {
     var flag7 = false;
 
-    // Check that the spark appears in the global list.
+    // Check that the prediction appears in the global list.
     runs(function() {
-      publicpredictions2._firebase.child("sparks").once("child_added", function(snap) {
-        var spark = snap.val();
-        expect(spark.author).toBe(USER2);
-        expect(spark.content).toBe(content2);
-        spark2Id = snap.name();
+      publicpredictions2._firebase.child("predictions").once("child_added", function(snap) {
+        var prediction = snap.val();
+        expect(prediction.author).toBe(USER2);
+        expect(prediction.content).toBe(content2);
+        prediction2Id = snap.name();
         flag7 = true;
       });
       publicpredictions2.post(content2, function(err, done) {
@@ -133,37 +133,37 @@ describe("Operations:", function() {
 
     waitsFor(function() {
       return flag7;
-    }, "Waiting for spark to appear in global list", TIMEOUT);
+    }, "Waiting for prediction to appear in global list", TIMEOUT);
   });
 
   it("Post in user list", function() {
-    // Check that the spark appears in the user's spark list.
+    // Check that the prediction appears in the user's prediction list.
     var flag8 = false;
 
     runs(function() {
-      var ref = publicpredictions2._firebase.child("sparks").child(spark2Id);
+      var ref = publicpredictions2._firebase.child("predictions").child(prediction2Id);
       ref.once("value", function(snap) {
-        var spark = snap.val();
-        expect(snap.name()).toBe(spark2Id);
-        expect(spark.author).toBe(USER2);
-        expect(spark.content).toBe(content2);
+        var prediction = snap.val();
+        expect(snap.name()).toBe(prediction2Id);
+        expect(prediction.author).toBe(USER2);
+        expect(prediction.content).toBe(content2);
         flag8 = true;
       });
     });
 
     waitsFor(function() {
       return flag8;
-    }, "Waiting for spark to appear in user list", TIMEOUT);
+    }, "Waiting for prediction to appear in user list", TIMEOUT);
   });
 
   it("Post in follower stream", function() { 
-    // Check that the spark appeared in a follower's stream.
+    // Check that the prediction appeared in a follower's stream.
     var flag9 = false;
 
     runs(function() {
-      var ref = publicpredictions1._mainUser.child("stream").child(spark2Id);
+      var ref = publicpredictions1._mainUser.child("stream").child(prediction2Id);
       ref.once("value", function(snap) {
-        expect(snap.name()).toBe(spark2Id);
+        expect(snap.name()).toBe(prediction2Id);
         expect(snap.val()).toBe(true);
         flag9 = true;
       });
@@ -171,6 +171,6 @@ describe("Operations:", function() {
 
     waitsFor(function() {
       return flag9;
-    }, "Waiting for spark to appear in follower stream", TIMEOUT);
+    }, "Waiting for prediction to appear in follower stream", TIMEOUT);
   });
 });
