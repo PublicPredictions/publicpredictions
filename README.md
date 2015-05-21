@@ -4,7 +4,7 @@ PublicPredictions is a web app that lets users post small messages called *spark
 their feed. You can follow other users, and their sparks will appear on your
 feed.
 
-### [Live Demo](http://publicpredictions.io)
+### [Live Demo](http://publicpredictions.github.io/)
 
 The unique property of this application is that it is built entirely using
 client side logic - no server neccessary - other than to serve the static
